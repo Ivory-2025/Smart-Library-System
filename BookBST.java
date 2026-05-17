@@ -20,11 +20,19 @@ public class BookBST {
         return r;
     }
 
-    public Book search(int i) {
-        return null;
+ public Book search(int isbn) { 
+        return sea(root, isbn); 
     }
 
-    private Book sea(Book r, int i) {
-        return null;
+    // O(log n) time complexity for search operation
+    private Book sea(Book r, int isbn) { 
+        // Both base cases: r == null (not found) and r.isbn == isbn (found)
+        if (r == null || r.isbn == isbn) { 
+            return r;
+        }
+
+        // Recursively search the left or right subtree based on the ISBN value
+        return (isbn < r.isbn) ? sea(r.left, isbn) : sea(r.right, isbn); 
     }
 }
+
