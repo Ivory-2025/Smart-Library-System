@@ -22,12 +22,12 @@ public class BorrowStack {
             return;
         }
 
-        System.out.println("\n Borrowing History (Latest First - LIFO):");
+        System.out.println("\n Borrowing History (Latest First):");
         System.out.println("==================================================");
 
         for (int i = borrowHistory.size() - 1; i >= 0; i--) {
             Book currentBook = borrowHistory.get(i);
-            System.out.println("• " + currentBook.toString());
+            System.out.println(currentBook.toString());
             System.out.println("--------------------------------------------------");
         }
     }
