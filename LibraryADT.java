@@ -8,7 +8,7 @@ public interface LibraryADT {
      * @param title  Title of the book.
      * @param author Author of the book.
      */
-    void addBook(int isbn, String title, String author);
+    void addBook(long isbn, String title, String author);
 
     /**
      * Searches the catalogue for a book by its ISBN.
@@ -17,7 +17,7 @@ public interface LibraryADT {
      *
      * @param isbn The ISBN to search for.
      */
-    void searchBook(int isbn);
+    void searchBook(long isbn);
 
     /**
      * Borrows a book from the catalogue:
@@ -27,7 +27,7 @@ public interface LibraryADT {
      *
      * @param isbn The ISBN of the book to borrow.
      */
-    void borrowBook(int isbn);
+    void borrowBook(long isbn);
 
     /**
      * Displays the full borrowing history in LIFO order

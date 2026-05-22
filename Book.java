@@ -1,13 +1,13 @@
 public class Book {
-    int isbn;    // Unique identifier; used as the BST key
+    long isbn;   
     String title;
     String author;
 
-    // ── BST node pointers (used by BookBST only) ──────────────
+    //BST node pointers (used by BookBST only)
     Book left;
     Book right;
 
-    public Book(int isbn, String title, String author) {
+    public Book(long isbn, String title, String author) {
         this.isbn   = isbn;
         this.title  = title;
         this.author = author;
