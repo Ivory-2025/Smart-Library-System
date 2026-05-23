@@ -1,15 +1,15 @@
-import java.util.Stack;
+import java.util.ArrayList;
 
 public class BorrowStack {
-    private Stack<Book> borrowHistory;
+    private ArrayList<Book> borrowHistory;
 
     public BorrowStack() {
-        this.borrowHistory = new Stack<>();
+        this.borrowHistory = new ArrayList<>();
     }
 
     public void pushBorrowRecord(Book book) {
         if (book != null) {
-            borrowHistory.push(book);
+            borrowHistory.add(book);
             System.out.println("Borrow record added: " + book.toString());
         } else {
             System.out.println("Failed: Invalid book object");
@@ -42,7 +42,7 @@ public class BorrowStack {
 
     public Book getLatestBorrow() {
         if (!borrowHistory.isEmpty()) {
-            return borrowHistory.peek();
+            return borrowHistory.get(borrowHistory.size() - 1);
         }
         return null;
     }
