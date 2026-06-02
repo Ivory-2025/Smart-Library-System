@@ -18,7 +18,7 @@ public class BorrowStack {
 
     public Book popBorrowRecord() {
         if (!borrowHistory.isEmpty()) {
-            return borrowHistory.pop();
+            return borrowHistory.remove(borrowHistory.size() - 1);
         }
         // Return null if history is empty
         return null; 
