@@ -4,7 +4,6 @@ import java.util.ArrayList;
 class SmartLibrary implements LibraryADT {
     private BookBST catalogue = new BookBST();
     private BorrowStack history = new BorrowStack();
-    private FineManager fineManager = new FineManager();
 
     public void addBook(long isbn, String title, String author) {
         catalogue.insert(isbn, title, author);
@@ -38,9 +37,56 @@ class SmartLibrary implements LibraryADT {
     public void borrowBook(long isbn) {
         Book b = catalogue.search(isbn);
         if (b != null) {
-            history.pushBorrowRecord(b);
+            if (b.isAvailable) {
+                b.isAvailable = false; // Mark as borrowed
+                history.pushBorrowRecord(b);
+                System.out.println("*** Please return this book within 14 days. ***");
+            } else {
+                System.out.println("Sorry, this book is currently borrowed out.");
+            }
         } else {
             System.out.println("Book not in catalogue.");
+        }
+    }
+
+    //return book
+    public void returnBook(Scanner sc) {
+        System.out.print("Enter ISBN to return (10 or 13 digits): ");
+        long returnIsbn = readIsbn(sc);
+        if (returnIsbn == -1) 
+            return; 
+
+        Book b = catalogue.search(returnIsbn);
+        if (b == null) {
+            System.out.println("Book not found in catalogue.");
+            return;
+        }
+
+        if (b.isAvailable) {
+            System.out.println("This book is still in the library (not currently borrowed).");
+            return;
+        }
+
+        //return process
+        b.isAvailable = true; 
+        System.out.println("Returning: \"" + b.title + "\"");
+        System.out.print("How many days overdue? (Enter 0 if on time): ");
+        
+        if (!sc.hasNextInt()) {
+            System.out.println("Invalid input. Book returned with no fine calculated.");
+            sc.next();
+            return;
+        }
+        
+        int days = sc.nextInt();
+        sc.nextLine();
+
+        if (days > 0) {
+            // RM 0.50 per day
+            double fineAmount = days * 0.50;
+            System.out.println("Overdue by " + days + " day(s). Fine applied: RM " + String.format("%.2f", fineAmount));
+        } else {
+            System.out.println("Book returned successfully. No fine applied!");
         }
     }
 
@@ -103,13 +149,14 @@ class SmartLibrary implements LibraryADT {
 
     private void printMenu() {
         
+
         System.out.println("\n--- Smart Library Menu ---");
         System.out.println("1. Add Book");
         System.out.println("2. Search by ISBN");
         System.out.println("3. Search by Title");
-        System.out.println("4. Borrow Book (Stack)");
-        System.out.println("5. View Borrow History");
-        System.out.println("6. Fine Management");
+        System.out.println("4. Borrow Book");
+        System.out.println("5. Return Book & Calculate Fine");
+        System.out.println("6. View Borrow History");
         System.out.println("7. Exit");
     }
 
@@ -166,13 +213,14 @@ class SmartLibrary implements LibraryADT {
                 borrowBook(borrowIsbn);
                 break;
 
+            //return book
             case 5:
-                viewLatestHistory();
+                returnBook(sc);
                 break;
 
-            // Fine Management
-            case 6: 
-                handleFineMenu(sc);
+            //view borrow history
+            case 6:
+                viewLatestHistory();
                 break;
         
             case 7:
@@ -184,64 +232,4 @@ class SmartLibrary implements LibraryADT {
         }
     }
 
-    private void handleFineMenu(Scanner sc) {
-        System.out.println("\n--- Fine Management ---");
-        System.out.println("1. Add Fine Record");
-        System.out.println("2. View All Fines");
-        System.out.println("3. Back to Main Menu");
-        System.out.print("Choice: ");
- 
-        if (!sc.hasNextInt()) {
-            System.out.println("Invalid input.");
-            sc.next();
-            return;
-        }
- 
-        int fineChoice = sc.nextInt();
-        sc.nextLine();
- 
-        if (fineChoice == 1) {
-            System.out.print("Enter Student Name: ");
-            String name = sc.nextLine().trim();
-            if (name.isEmpty()) {
-                System.out.println("Student name cannot be empty.");
-                return;
-            }
- 
-            System.out.print("Enter ISBN of overdue book (10 or 13 digits): ");
-            long fineIsbn = readIsbn(sc);
-            if (fineIsbn == -1) 
-                return;
- 
-            Book b = catalogue.search(fineIsbn);
-            if (b == null) {
-                System.out.println("Book not found in catalogue.");
-                return;
-            }
- 
-            System.out.print("Enter number of days overdue: ");
-            if (!sc.hasNextInt()) {
-                System.out.println("Invalid number.");
-                sc.next();
-                return;
-            }
-            int days = sc.nextInt();
-            sc.nextLine();
-            if (days <= 0) {
-                System.out.println("Days overdue must be at least 1.");
-                return;
-            }
- 
-            fineManager.addFine(name, b, days);
- 
-        } else if (fineChoice == 2) {
-            fineManager.displayAllFines();
- 
-        } else if (fineChoice == 3) {
-            System.out.println("Returning to main menu.");
- 
-        } else {
-            System.out.println("Invalid option.");
-        }
-    }
 }

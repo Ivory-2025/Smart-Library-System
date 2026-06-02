@@ -16,13 +16,21 @@ public class BorrowStack {
         }
     }
 
+    public Book popBorrowRecord() {
+        if (!borrowHistory.isEmpty()) {
+            return borrowHistory.pop();
+        }
+        // Return null if history is empty
+        return null; 
+    }
+
     public void displayLIFOHistory() {
         if (borrowHistory.isEmpty()) {
             System.out.println("No borrowing records available.");
             return;
         }
 
-        System.out.println("\n Borrowing History (Latest First):");
+        System.out.println("\nBorrowing History (Latest First):");
         System.out.println("==================================================");
 
         for (int i = borrowHistory.size() - 1; i >= 0; i--) {

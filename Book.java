@@ -2,6 +2,7 @@ public class Book {
     long isbn;   
     String title;
     String author;
+    boolean isAvailable;
 
     //BST node pointers (used by BookBST only)
     Book left;
@@ -11,7 +12,8 @@ public class Book {
         this.isbn   = isbn;
         this.title  = title;
         this.author = author;
-        this.left   = null;   // explicitly null — this is a new leaf
+        this.isAvailable = true;
+        this.left   = null;   
         this.right  = null;
     }
 
