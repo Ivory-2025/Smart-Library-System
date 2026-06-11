@@ -163,6 +163,7 @@ class SmartLibrary implements LibraryADT {
     private void handleChoice(int choice, Scanner sc) {
         switch (choice) {
 
+            //add book
             case 1:
                 System.out.print("Enter ISBN(10 or 13 digits): ");
                 long addIsbn = readIsbn(sc);
@@ -186,6 +187,7 @@ class SmartLibrary implements LibraryADT {
                 addBook(addIsbn, title, author);
                 break;
 
+            //search book by ISBN
             case 2:
                 System.out.print("Enter ISBN to search (10 or 13 digits): ");
                 long searchIsbn = readIsbn(sc);
@@ -194,7 +196,7 @@ class SmartLibrary implements LibraryADT {
                 searchBook(searchIsbn);
                 break;
 
-            // Search by Title
+            //Search book by Title
             case 3: 
                 System.out.print("Enter title keyword: ");
                 String keyword = sc.nextLine().trim();
